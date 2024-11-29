@@ -4,8 +4,9 @@
 #include "parser.hpp"
 #include <tuple>
 #include <vector>
+#include <bitset>
 
-int TAPE_SIZE = 128;
+const int TAPE_SIZE = 128;
 int MAX_STEPS = 10000;
 
 using namespace std;
@@ -20,8 +21,7 @@ void run_tm(string &line, int line_counter)
     map<tuple<char,char>, tuple<char,char,char>> rulemap = getRuleDict(line);
         bool halt = false;
         // init tape
-        char tape[TAPE_SIZE];
-        fill_n(tape, TAPE_SIZE, 0);
+        bitset<TAPE_SIZE+3> tape;
 
         int steps = 0;
         // tracing loop
@@ -37,7 +37,7 @@ void run_tm(string &line, int line_counter)
             //cout << index << " " << q << steps << "\n";
             rd = tape[index];
 
-            tuple<int,int,int> x = rulemap[make_tuple(rd, q)];
+            tuple<char,char,char> x = rulemap[make_tuple(rd, q)];
             wt = get<0>(x);
             dr = get<1>(x);
             q_n = get<2>(x);
